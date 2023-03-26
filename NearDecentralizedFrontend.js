@@ -1,24 +1,24 @@
-const lidoContract = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84";
+const rocketPoolContract = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84";
 const tokenDecimals = 18;
 
-const lidoAbi = fetch(
+const rocketPoolApi = fetch(
   "https://raw.githubusercontent.com/lidofinance/lido-subgraph/master/abis/Lido.json"
 );
 
-const iface = new ethers.utils.Interface(lidoAbi.body);
+const iface = new ethers.utils.Interface(rocketPoolApi.body);
 
-if (state.lidoArp === undefined) {
+if (state.rocketPoolArp === undefined) {
   const apr = fetch(
     "https://api.allorigins.win/get?url=https://stake.lido.fi/api/sma-steth-apr"
   );
-  State.update({ lidoArp: JSON.parse(apr?.body?.contents) ?? "..." });
+  State.update({ rocketPoolArp: JSON.parse(apr?.body?.contents) ?? "..." });
 }
 
 const getStakedBalance = (receiver) => {
   const encodedData = iface.encodeFunctionData("balanceOf", [receiver]);
   return Ethers.provider()
     .call({
-      to: lidoContract,
+      to: rocketPoolContract,
       data: encodedData,
     })
     .then((rawBalance) => {
@@ -39,14 +39,14 @@ const submitEthers = (strEther, _referral) => {
     return console.log("Amount is missing");
   }
   const erc20 = new ethers.Contract(
-    lidoContract,
-    lidoAbi.body,
+    rocketPoolContract,
+    rocketPoolApi.body,
     Ethers.provider().getSigner()
   );
 
   let amount = ethers.utils.parseUnits(strEther, tokenDecimals).toHexString();
 
-  erc20.submit(lidoContract, { value: amount }).then((transactionHash) => {
+  erc20.submit(rocketPoolContract, { value: amount }).then((transactionHash) => {
     console.log("transactionHash is " + transactionHash);
   });
 };
