@@ -154,7 +154,7 @@ return (
   <Theme>
     <div class="LidoContainer">
       <div class="Header">Stake ETH</div>
-      <div class="SubHeader">Stake ETH and receive stETH while staking.</div>
+      <div class="SubHeader">Stake ETH and receive rETH while staking.</div>
       <div>{ethp}</div>
 
       <div class="LidoForm">
